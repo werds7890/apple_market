@@ -99,6 +99,7 @@ class MainActivity : AppCompatActivity() {
                 removeBuilder.setPositiveButton("확인") {dialog, which ->
                             dataList.removeAt(position)
                             adapter.notifyItemRemoved(position)
+                            adapter.notifyItemRangeChanged(position, dataList.size)
                 }
                 removeBuilder.setNegativeButton("취소") {dialog, which ->
                     dialog.dismiss()
