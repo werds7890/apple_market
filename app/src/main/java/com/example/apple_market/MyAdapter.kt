@@ -16,7 +16,13 @@ class MyAdapter(private val items : MutableList<Item>) : RecyclerView.Adapter<My
         fun onClick(view: View, position : Int) //데이터 받고 메인액티비티에서 재정의
     }
 
+    interface LongClick {
+        fun onLongClick(view:View, position: Int)
+    }
+
     var itemClick : ItemClick?=null
+    var longClick : LongClick?=null
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyAdapter.Holder {
         val binding=MarketItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
@@ -27,6 +33,10 @@ class MyAdapter(private val items : MutableList<Item>) : RecyclerView.Adapter<My
     override fun onBindViewHolder(holder: MyAdapter.Holder, position: Int) {
         holder.itemView.setOnClickListener { //클릭이벤트추가부분, 여기서 it은 클릭 이벤트가 발생한 뷰를 말함
             itemClick?.onClick(it,position)
+        }
+        holder.itemView.setOnLongClickListener {
+            longClick?.onLongClick(it,position)
+            false
         }
         holder.img.setImageResource(items[position].imgData)
         holder.address.text=items[position].addressData
