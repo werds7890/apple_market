@@ -14,6 +14,7 @@ import java.text.DecimalFormat
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding : ActivityDetailBinding
+    private var likeCounting=false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding=ActivityDetailBinding.inflate(layoutInflater)
@@ -26,6 +27,7 @@ class DetailActivity : AppCompatActivity() {
         var like=itemList?.isLike
         heartView(like,binding)
         binding.like.setOnClickListener {
+            likeCounting=!likeCounting  //좋아요 카운트(좋아요 눌러져있는상태라면 좋아요수더이상X)
             like=!like!!
             if(like==LikeResponse.YES){
                 binding.like.setImageResource(R.drawable.full_heart)
@@ -47,6 +49,7 @@ class DetailActivity : AppCompatActivity() {
             var positionData=intent.getIntExtra("itemPosition",0)
             intent.putExtra("likeResult",like)
             intent.putExtra("position",positionData)
+            intent.putExtra("likeCount",likeCounting)
             setResult(RESULT_OK,intent)
             finish()
         }

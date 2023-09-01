@@ -26,6 +26,7 @@ import com.example.apple_market.databinding.ActivityDetailBinding
 import com.example.apple_market.databinding.ActivityMainBinding
 import com.example.apple_market.databinding.MarketItemBinding
 import com.google.android.material.snackbar.Snackbar
+import java.lang.System.exit
 import java.text.DecimalFormat
 import kotlin.system.exitProcess
 
@@ -133,13 +134,16 @@ class MainActivity : AppCompatActivity() {
             result -> if(result.resultCode== RESULT_OK){
                 var like=result.data?.getBooleanExtra("likeResult",false)!!
                 var position=result.data?.getIntExtra("position",0)!!
+                var likeCount=result.data?.getBooleanExtra("likeCount",false)!!
                 Log.v("like","${like}")
                 Log.v("position","${position}")
                 if(like){
-                    item[position].isLike=true
-                    item[position].likeData+=1
+                    if(likeCount){
+                        item[position].isLike=true
+                        item[position].likeData+=1
+                    }
                 }else {
-                    if(item[position].isLike){
+                    if(likeCount){
                         item[position].isLike=false
                         item[position].likeData-=1
                     }
