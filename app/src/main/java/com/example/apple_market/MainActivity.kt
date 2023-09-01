@@ -80,12 +80,31 @@ class MainActivity : AppCompatActivity() {
 
         likeResult(dataList,adapter)
 
-        adapter.itemClick=object : MyAdapter.ItemClick { //아이템클릭인터페이스를 람다식으로 정의
+        adapter.itemClick=object : MyAdapter.ItemClick { //아이템클릭인터페이스를 익명함수로 온클릭함수를재정의
             override fun onClick(view: View, position: Int) {
                 val intent=Intent(this@MainActivity,DetailActivity::class.java)
                 intent.putExtra("item",dataList[position])
                 intent.putExtra("itemPosition",position)
                 dataResult.launch(intent)
+            }
+        }
+
+        adapter.longClick=object : MyAdapter.LongClick {    //롱클릭인터페이스의 onLongClick 함수를 재정의
+            override fun onLongClick(view: View, position: Int) {
+                val removeBuilder=AlertDialog.Builder(this@MainActivity)
+                removeBuilder.setTitle("상품 목록 삭제")
+                removeBuilder.setMessage("정말 삭제 하시겠습니까?")
+                removeBuilder.setIcon(R.drawable.clock)
+
+                removeBuilder.setPositiveButton("확인") {dialog, which ->
+                            dataList.removeAt(position)
+                            adapter.notifyItemRemoved(position)
+                }
+                removeBuilder.setNegativeButton("취소") {dialog, which ->
+                    dialog.dismiss()
+                }
+
+                removeBuilder.show()
             }
         }
 
